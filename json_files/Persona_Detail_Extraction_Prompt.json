@@ -1,0 +1,48 @@
+{
+    "persona_prompts": [
+        {
+            "prompt": "What is the gender distribution of your audience?",
+            "completion": "My audience is primarily [gender], with a mix of [secondary gender]."
+        },
+        {
+            "prompt": "What is the age range of your audience, and what stage of life are they in?",
+            "completion": "My audience typically falls between the ages of [age range], and they are in the [stage of life] stage (e.g., career-focused, new parents, etc.)."
+        },
+        {
+            "prompt": "Where is your audience located geographically? Are there any key regions or countries that make up most of your followers?",
+            "completion": "Most of my audience is located in [countries/regions], with a concentration in [key cities]."
+        },
+        {
+            "prompt": "What is the education level of your audience? Do they tend to have any specialized knowledge or training?",
+            "completion": "My audience typically has [education level], and many have a background in [specialized fields or industries]."
+        },
+        {
+            "prompt": "What kinds of businesses does your audience run? What are the size and scope of these businesses?",
+            "completion": "My audience primarily runs [type of businesses], typically with [number of employees] employees, focusing on [industry or business type]."
+        },
+        {
+            "prompt": "What are the primary challenges or pain points that your audience is facing with their businesses?",
+            "completion": "My audience struggles with [specific challenges], such as [pain point 1] and [pain point 2]."
+        },
+        {
+            "prompt": "What are your audience\u2019s goals or motivations when engaging with your content?",
+            "completion": "My audience is motivated by [goal 1], [goal 2], and wants to achieve [specific outcome]."
+        },
+        {
+            "prompt": "What type of content does your audience respond to most (e.g., educational, inspirational, how-to, entertainment)?",
+            "completion": "My audience responds best to [type of content], especially when it addresses [specific topics or themes]."
+        },
+        {
+            "prompt": "What platforms does your audience engage with most? Are they active on social media, blogs, or other online communities?",
+            "completion": "My audience is most active on [social platforms], with significant engagement on [blogs, forums, or other communities]."
+        },
+        {
+            "prompt": "What buying concerns does your audience have when it comes to investing in products or services like yours?",
+            "completion": "The main concerns of my audience include [concern 1], [concern 2], and [concern 3], which I can address by [solution or reassurance]."
+        },
+        {
+            "prompt": "What are the biggest opportunities for your audience to improve their business through your content or services?",
+            "completion": "The biggest opportunities for my audience are [opportunity 1], [opportunity 2], and they can improve their business by [specific strategy or solution]."
+        }
+    ]
+}

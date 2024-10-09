@@ -1,0 +1,52 @@
+{
+    "content_prompts": [
+        {
+            "prompt": "What specific challenge or pain point is your audience currently facing in relation to your product or service?",
+            "completion": "My audience is currently struggling with [describe challenge] and needs [solution]."
+        },
+        {
+            "prompt": "What are your audience's top goals or desires that your product or service helps them achieve?",
+            "completion": "My audience\u2019s top goals are [goal 1], [goal 2], and they turn to my product/service to achieve [specific outcome]."
+        },
+        {
+            "prompt": "How would you describe the transformation your product or service delivers from your audience\u2019s perspective?",
+            "completion": "From my audience\u2019s perspective, the transformation is [describe how their life or situation improves]."
+        },
+        {
+            "prompt": "What are the most common myths or misunderstandings about your niche that you could dispel through educational content?",
+            "completion": "A common myth about my niche is [misunderstanding], and I can dispel it by educating my audience with [specific facts or insights]."
+        },
+        {
+            "prompt": "What emotions do you want your content to evoke, and why are these emotions important to your audience?",
+            "completion": "I want to evoke [emotion], because it helps my audience feel [describe emotional connection or impact] which motivates them to engage with my content."
+        },
+        {
+            "prompt": "What personal stories or testimonials from customers could you highlight to build trust and demonstrate success?",
+            "completion": "I can highlight the story of [specific customer or testimonial] who experienced [specific benefit] using my product/service."
+        },
+        {
+            "prompt": "What unique aspects of your brand\u2019s story or values can you share to connect with your audience on a deeper level?",
+            "completion": "A unique aspect of my brand\u2019s story is [specific detail about origin or values] and it connects with my audience because [emotional or practical reason]."
+        },
+        {
+            "prompt": "What is your audience currently missing or not finding in your niche that you can provide with your content?",
+            "completion": "My audience is missing [specific content, knowledge, or product] that I can provide through [describe your content or offering]."
+        },
+        {
+            "prompt": "What frequently asked questions (FAQs) or concerns do your potential customers have, and how can you address them through your posts?",
+            "completion": "My audience frequently asks about [specific question], and I can address this by [providing clear answers, demonstrations, or solutions]."
+        },
+        {
+            "prompt": "What objections might your audience have about choosing your product or service, and how can you address these objections in a post?",
+            "completion": "The main objections my audience has are [cost, complexity, value], and I can address these by [showcasing benefits, testimonials, offering comparisons, etc.]."
+        },
+        {
+            "prompt": "What recent events, trends, or cultural moments are relevant to your audience that you can connect with your brand messaging?",
+            "completion": "Recent trends that are relevant include [list of trends], and I can connect them to my brand by [tying them into my message, product, or content]."
+        },
+        {
+            "prompt": "What new features, updates, or upcoming events related to your product or service can you promote to build excitement?",
+            "completion": "We are introducing [new feature/event] which will [specific impact], and I can build excitement by [teasing, offering exclusive previews, or sharing behind-the-scenes content]."
+        }
+    ]
+}

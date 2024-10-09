@@ -3,12 +3,21 @@ require('dotenv').config();
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors'); // Allows cross-origin requests
+const fs = require('fs');
+const path = require('path');
+const { jsPDF } = require('jspdf'); // PDF generation library
 
 const app = express();
 app.use(express.json());
 app.use(cors()); // Enable CORS
 
 const apiKey = process.env.OPENAI_API_KEY; // Store API key in environment variables for security
+
+// Ensure the API key is set correctly
+if (!apiKey) {
+  console.error('API key is missing!');
+  process.exit(1); // Exit if no API key is found
+}
 
 app.post('/chat', async (req, res) => {
   const userMessage = req.body.message;
@@ -31,17 +40,28 @@ app.post('/chat', async (req, res) => {
   res.json(data.choices[0].message.content);
 });
 
-// New /generate-persona Route
-let personaResponses = {}; // Store persona data
+let personaResponses = {}; // To store user persona responses
 
+// Route to load persona detail prompts and accept persona details
 app.post('/generate-persona', (req, res) => {
-  personaResponses = req.body; // Store the persona information from the frontend
-  res.send({ message: 'Persona details saved successfully!' });
+  const personaDataPath = path.join(__dirname, 'json_files', 'Persona_Detail_Extraction_Prompt.json');
+  
+  fs.readFile(personaDataPath, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error reading persona file');
+    }
+
+    const personaPrompts = JSON.parse(data); // Parse the persona prompts JSON
+    personaResponses = req.body; // Save the user’s responses
+    res.json({ message: 'Persona details saved successfully!', personaPrompts });
+  });
 });
 
-// New /generate-pdf Route (Optional)
+// Route to generate PDF for persona details
 app.get('/generate-pdf', (req, res) => {
   const doc = new jsPDF();
+
   doc.text("Customer Personas", 10, 10);
 
   Object.keys(personaResponses).forEach((key, index) => {
@@ -50,36 +70,43 @@ app.get('/generate-pdf', (req, res) => {
 
   const pdf = doc.output();
   res.setHeader('Content-Type', 'application/pdf');
-  res.send(pdf); // Send PDF back for download
+  res.send(pdf); // Send the PDF back for download
 });
 
-// Route to accept content generation details
 let contentResponses = {}; // Store content generation responses
 
+// Route to load content generation prompts and accept content details
 app.post('/content-generation', (req, res) => {
-  contentResponses = req.body; // Collect content generation form data
-  res.send({ message: 'Content generation details saved successfully' });
+  const contentDataPath = path.join(__dirname, 'json_files', 'Prompt_File.json');
+  
+  fs.readFile(contentDataPath, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error reading content file');
+    }
+
+    const contentPrompts = JSON.parse(data); // Parse the content prompts JSON
+    contentResponses = req.body; // Save the user's responses for content generation
+    res.json({ message: 'Content generation details saved successfully!', contentPrompts });
+  });
 });
 
-// Route to generate social media posts
+// Route to generate social media posts based on persona and content data
 app.get('/generate-social-posts', (req, res) => {
-  const socialMediaOutputs = {
-    "awareness_pillar": [
-      {
-        "post_number": 1,
-        "content": "Struggling to convert all the likes and comments on your posts into real business outcomes? You’re not alone! Here’s how you can start turning attention into revenue. 💼 #ContentToCash"
-      },
-      {
-        "post_number": 2,
-        "content": "Did you know that understanding your audience is the key to organic growth? It’s not about getting more followers; it’s about engaging the right ones. #AudienceMatters"
-      }
-      // Add more posts here from Social_Media_Outputs file...
-    ]
-  };
+  const socialMediaDataPath = path.join(__dirname, 'json_files', 'Social_Media_Outputs.json');
+  
+  fs.readFile(socialMediaDataPath, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error reading social media file');
+    }
 
-  res.json(socialMediaOutputs); // Send social media posts as JSON response
+    const socialMediaOutputs = JSON.parse(data); // Parse social media outputs JSON
+    // Optionally, customize social media posts based on personaResponses and contentResponses
+
+    res.json(socialMediaOutputs); // Send the posts back to the frontend
+  });
 });
-
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
