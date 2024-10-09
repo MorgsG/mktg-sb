@@ -12,7 +12,7 @@ const app = express();
 app.use(cors({
   origin: 'https://www.socialbureau.co'
   methods: ['GET', 'POST', 'OPTIONS'], // Ensure the allowed methods are specified
-  allowedHeaders: ['Content-Type'] // Specify allowed headers
+  allowedHeaders: ['Content-Type', 'Authorization'] // Specify allowed headers
 }));
 
 app.use(express.json());
@@ -47,6 +47,13 @@ app.post('/chat', async (req, res) => {
 });
 
 let personaResponses = {}; // To store user persona responses
+
+app.options('/generate-persona', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://www.socialbureau.co');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.status(204).end(); // End the preflight request with no content
+});
 
 // Route to load persona detail prompts and accept persona details
 app.post('/generate-persona', (req, res) => {
