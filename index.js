@@ -9,13 +9,17 @@ const { jsPDF } = require('jspdf'); // PDF generation library
 
 const app = express();
 
-app.use(cors({
-  origin: 'https://www.socialbureau.co'
-  methods: ['GET', 'POST', 'OPTIONS'], // Ensure the allowed methods are specified
-  allowedHeaders: ['Content-Type', 'Authorization'] // Specify allowed headers
-}));
+const corsOptions = {
+  origin: 'https://www.socialbureau.co',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
+
+app.options('*', cors(corsOptions));
 
 const apiKey = process.env.OPENAI_API_KEY; // Store API key in environment variables for security
 
