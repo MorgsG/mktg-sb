@@ -9,26 +9,31 @@ const { jsPDF } = require('jspdf'); // PDF generation library
 
 const app = express();
 
+// CORS options
 const corsOptions = {
-  origin: 'https://www.socialbureau.co',
+  origin: 'https://www.socialbureau.co', // Ensure the domain is correct
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200 // For legacy browsers like IE11
+};
 
+// Apply CORS globally
 app.use(cors(corsOptions));
 
+// JSON body parsing middleware
 app.use(express.json());
 
+// Handle preflight requests (OPTIONS) globally
 app.options('*', cors(corsOptions));
 
-const apiKey = process.env.OPENAI_API_KEY; // Store API key in environment variables for security
-
-// Ensure the API key is set correctly
+// Ensure API key is set for GPT
+const apiKey = process.env.OPENAI_API_KEY;
 if (!apiKey) {
   console.error('API key is missing!');
   process.exit(1); // Exit if no API key is found
 }
 
+// GPT Chat Completion Route
 app.post('/chat', async (req, res) => {
   const userMessage = req.body.message;
 
@@ -50,16 +55,15 @@ app.post('/chat', async (req, res) => {
   res.json(data.choices[0].message.content);
 });
 
-let personaResponses = {}; // To store user persona responses
+// In-memory storage for persona details
+let personaResponses = {};
 
-app.options('/generate-persona', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://www.socialbureau.co');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.status(204).end(); // End the preflight request with no content
+// Handle preflight requests for persona generation
+app.options('/generate-persona', cors(corsOptions), (req, res) => {
+  res.status(204).end();
 });
 
-// Route to load persona detail prompts and accept persona details
+// POST route for persona detail extraction
 app.post('/generate-persona', (req, res) => {
   const personaDataPath = path.join(__dirname, 'json_files', 'Persona_Detail_Extraction_Prompt.json');
   
@@ -67,18 +71,17 @@ app.post('/generate-persona', (req, res) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Error reading persona file');
-    }
-
-    const personaPrompts = JSON.parse(data); // Parse the persona prompts JSON
-    personaResponses = req.body; // Save the user’s responses
+    } 
+    
+    const personaPrompts = JSON.parse(data); // Parse persona prompts JSON
+    personaResponses = req.body; // Save user's persona responses in memory
     res.json({ message: 'Persona details saved successfully!', personaPrompts });
   });
 });
 
-// Route to generate PDF for persona details
+// Route to generate PDF of persona details
 app.get('/generate-pdf', (req, res) => {
   const doc = new jsPDF();
-
   doc.text("Customer Personas", 10, 10);
 
   Object.keys(personaResponses).forEach((key, index) => {
@@ -87,12 +90,13 @@ app.get('/generate-pdf', (req, res) => {
 
   const pdf = doc.output();
   res.setHeader('Content-Type', 'application/pdf');
-  res.send(pdf); // Send the PDF back for download
+  res.send(pdf); // Send the PDF back to the client
 });
 
-let contentResponses = {}; // Store content generation responses
+// In-memory storage for content generation responses
+let contentResponses = {};
 
-// Route to load content generation prompts and accept content details
+// POST route to handle content generation prompts and save user responses
 app.post('/content-generation', (req, res) => {
   const contentDataPath = path.join(__dirname, 'json_files', 'Prompt_File.json');
   
@@ -101,14 +105,14 @@ app.post('/content-generation', (req, res) => {
       console.error(err);
       return res.status(500).send('Error reading content file');
     }
-
-    const contentPrompts = JSON.parse(data); // Parse the content prompts JSON
-    contentResponses = req.body; // Save the user's responses for content generation
+    
+    const contentPrompts = JSON.parse(data); // Parse content prompts JSON
+    contentResponses = req.body; // Save user's content responses in memory
     res.json({ message: 'Content generation details saved successfully!', contentPrompts });
   });
 });
 
-// Route to generate social media posts based on persona and content data
+// GET route to generate social media posts based on persona and content data
 app.get('/generate-social-posts', (req, res) => {
   const socialMediaDataPath = path.join(__dirname, 'json_files', 'Social_Media_Outputs.json');
   
@@ -117,14 +121,15 @@ app.get('/generate-social-posts', (req, res) => {
       console.error(err);
       return res.status(500).send('Error reading social media file');
     }
-
+  
     const socialMediaOutputs = JSON.parse(data); // Parse social media outputs JSON
-    // Optionally, customize social media posts based on personaResponses and contentResponses
+    // Optionally, you can customize the social media posts using `personaResponses` and `contentResponses`
 
-    res.json(socialMediaOutputs); // Send the posts back to the frontend
+    res.json(socialMediaOutputs); // Send the generated posts back to the frontend
   });
 });
 
+// Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
