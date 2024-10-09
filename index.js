@@ -9,7 +9,9 @@ const { jsPDF } = require('jspdf'); // PDF generation library
 
 const app = express();
 app.use(express.json());
-app.use(cors()); // Enable CORS
+app.use(cors({
+  origin: 'https://socialbureau.co'
+}));
 
 const apiKey = process.env.OPENAI_API_KEY; // Store API key in environment variables for security
 
