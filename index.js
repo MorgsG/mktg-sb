@@ -8,10 +8,12 @@ const path = require('path');
 const { jsPDF } = require('jspdf'); // PDF generation library
 
 const app = express();
-app.use(express.json());
+
 app.use(cors({
-  origin: 'https://socialbureau.co'
+  origin: 'https://www.socialbureau.co'
 }));
+
+app.use(express.json());
 
 const apiKey = process.env.OPENAI_API_KEY; // Store API key in environment variables for security
 
