@@ -11,6 +11,8 @@ const app = express();
 
 app.use(cors({
   origin: 'https://www.socialbureau.co'
+  methods: ['GET', 'POST', 'OPTIONS'], // Ensure the allowed methods are specified
+  allowedHeaders: ['Content-Type'] // Specify allowed headers
 }));
 
 app.use(express.json());
